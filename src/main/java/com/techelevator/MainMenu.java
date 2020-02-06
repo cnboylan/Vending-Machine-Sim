@@ -3,30 +3,33 @@ package com.techelevator;
 import java.util.Scanner;
 
 public class MainMenu {
-	public static void main(String[] args) {
-	Scanner userInput = new Scanner(System.in);
-	String userIn = userInput.nextLine();
-	System.out.println("(1) Display Vending Machine Items");
-	System.out.println("(2) Purchase");
-	System.out.println("(3) Exit");
 	
-	if (userIn.equals("1")) {
-		//List All Items and their Quantities in Vending Machine
-		displayInventory;
+	public MainMenu(VendingMachine machine) {
+		
+		Scanner userInput = new Scanner(System.in);
+		
+		System.out.println("(1) Display Vending Machine Items");
+		System.out.println("(2) Purchase");
+		System.out.println("(3) Exit");
+		
+		String userIn = userInput.nextLine();
+
+		if (userIn.equals("1")) {
+			//List All Items and their Quantities in Vending Machine
+			machine.displayInventory();
+		}
+
+		if (userIn.equals("2")) {
+			//Direct to Purchase Menu
+			PurchaseMenu newPurchase = new PurchaseMenu();
+			newPurchase.purchaseMenu(machine);
+		}
+
+		if (userIn.equals("3")) {
+			//Exit Application
+			System.exit(0);
+		}
 	}
-	
-	if (userIn.equals("2")) {
-		//Direct to Purchase Menu
-		PurchaseMenu;
-	}
-	
-	if (userIn.equals("3")) {
-		//Exit Application
-		System.exit(0);
-	}
-	
-	
-}
 }
 
 /*// Clock.java

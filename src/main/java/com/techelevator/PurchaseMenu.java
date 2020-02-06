@@ -8,7 +8,7 @@ public class PurchaseMenu {
 	BigDecimal currentMoney = new BigDecimal(0.00);
 	Scanner userInput = new Scanner(System.in);
 	
-	public void purchaseMenu() {
+	public void purchaseMenu(VendingMachine machine) {
 		
 		System.out.println(">(1) Feed Money");
 		System.out.println(">(2) Select Product");
@@ -18,23 +18,24 @@ public class PurchaseMenu {
 		String userChoice = userInput.nextLine();
 		
 		if(userChoice.equals("1")) {
-			feedMoney();
+			System.out.println("Please enter your dollar amount (e.g. 1, 2, 5, 10) ");
+			String dollarInput = userInput.nextLine();
+			
+			machine.feedMoney(dollarInput);
 		}
 		
 		if(userChoice.equals("2")) {
-			selectProduct();
+			machine.selectProduct();
 		}
 		
 		if(userChoice.equals("3")) {
-			finishTransaction();
+			machine.finishTransaction();
 		}
 		
-		else {
-			purchaseMenu();
-		}
+		else
+			userChoice = userInput.nextLine();
 		
 	}
-	
-	
-
+		
 }
+	

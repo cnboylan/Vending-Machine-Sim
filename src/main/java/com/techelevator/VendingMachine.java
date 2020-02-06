@@ -1,11 +1,15 @@
 package com.techelevator;
 
 import java.io.File;
+import com.techelevator.item.*;
 import java.io.FileNotFoundException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+
+import com.techelevator.item.Chip;
+import com.techelevator.item.Drink;
 
 public class VendingMachine {
 	
@@ -68,12 +72,10 @@ public class VendingMachine {
 
 	}
 
-	public void feedMoney() {
+	public void feedMoney(String dollarInput) {
 		String dollarAmount = "";
 
 		while (dollarAmount.equals("")) {
-			System.out.println("Please enter your dollar amount (e.g. 1, 2, 5, 10) ");
-			String dollarInput = userInput.nextLine();
 
 			if (dollarInput.equals("1") || dollarInput.equals("2") || dollarInput.equals("5")
 					|| dollarInput.equals("10")) {
