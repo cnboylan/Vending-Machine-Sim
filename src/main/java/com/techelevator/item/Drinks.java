@@ -1,4 +1,4 @@
-package com.techelevator;
+package com.techelevator.item;
 
 public class Drinks extends Item {
 
