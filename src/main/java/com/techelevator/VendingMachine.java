@@ -14,36 +14,39 @@ import com.techelevator.item.Chip;
 import com.techelevator.item.Drink;
 
 public class VendingMachine {
-	
+
 	private List<Item> inventoryList = new ArrayList<Item>();
+	private List<String> masterInventoryList = new ArrayList<String>();
 
 	public VendingMachine() {
 
-	
 		String path = "vendingmachine.csv";
-		//File inventoryFile = new File(path);
+		// File inventoryFile = new File(path);
 		File inventoryFile = new File(path);
 
-		if( !inventoryFile.exists() ) { // Checks if the file is there
-			System.out.println(path+" doesn't exist");
+		if (!inventoryFile.exists()) { // Checks if the file is there
+			System.out.println(path + " doesn't exist");
 			System.exit(1); // Ends the program
-			
-		} else if (!inventoryFile.isFile() ) {
-			System.out.println(path+" isn't a file");
+
+		} else if (!inventoryFile.isFile()) {
+			System.out.println(path + " isn't a file");
 			System.exit(1); // Ends program if the file's not there
 		}
 
+		// public Map<String, Item> getInventory(File inventoryFile) throws
+		// FileNotFoundException {
+		// Map<String, Item> inventoryMap = new LinkedHashMap<String, Item>();
 
-		//public Map<String, Item> getInventory(File inventoryFile) throws FileNotFoundException {
-			//Map<String, Item> inventoryMap = new LinkedHashMap<String, Item>();
-			
 		try (Scanner fileScanner = new Scanner(inventoryFile)) {
 
 			while (fileScanner.hasNextLine()) {
 				String line = fileScanner.nextLine();
 				String[] lineArray = line.split("\\|");
 
+				masterInventoryList.add(lineArray[1]);
+
 				if (lineArray[3].equals("Chip")) {
+
 					for (int i = 0; i < 5; i++) {
 						Item newChip = new Chip(lineArray[0], lineArray[1], new BigDecimal(lineArray[2]));
 						inventoryList.add(newChip);
@@ -77,17 +80,40 @@ public class VendingMachine {
 		}
 //return inventoryMap;
 	}
+
 // Prints out the inventory list from the vending machine	
 //	public void printOut() {
 //		for (Item item : inventoryList) {
 //			System.out.println(item.getSlotLocation() + " " + item.getProductName() + " " + item.getPrice() + " " + item.getType());
 //		}
 //	}
-	
+	public List<Item> getInventoryList() {
+		return inventoryList;
+	}
+
+	public List<String> getMasterInventoryList() {
+		return masterInventoryList;
+	}
 
 	public void displayInventory() {
+		
+		for (String name : getMasterInventoryList()) {
+			int count = 0;
+			for (Item invName : getInventoryList()) {
 
+				if (name.equals(invName.getProductName())) {
+					count++;
+				}
+			}
+			if (count == 0) {
+				System.out.println(name + " Sold Out");
+			} else
+
+				System.out.println(name + count);
+		}
 	}
+
+
 
 	public void feedMoney(String dollarInput) {
 		String dollarAmount = "";
@@ -100,13 +126,10 @@ public class VendingMachine {
 
 			}
 		}
-
-		purchaseMenu();
 	}
 
 	public void selectProduct() {
 
-		purchaseMenu();
 	}
 
 	public void finishTransaction() {

@@ -1,7 +1,11 @@
 package com.techelevator;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
+
+import com.techelevator.item.Item;
 
 public class Menu {
 
@@ -26,6 +30,9 @@ public class Menu {
 		if (userIn.equals("1")) {
 			// List All Items and their Quantities in Vending Machine
 			machine.displayInventory();
+			mainMenu();
+					
+					
 		}
 
 		if (userIn.equals("2")) {
@@ -58,14 +65,17 @@ public class Menu {
 				String dollarInput = userInput.nextLine();
 
 				machine.feedMoney(dollarInput);
+				purchaseMenu();
 			}
 
 			if (userChoice.equals("2")) {
 				machine.selectProduct();
+				purchaseMenu();
 			}
 
 			if (userChoice.equals("3")) {
 				machine.finishTransaction();
+				mainMenu();
 			}
 			
 			else
