@@ -14,17 +14,12 @@ import com.techelevator.item.Drink;
 public class VendingMachine {
 
 	private List<Item> inventoryList = new ArrayList<Item>();
+	private List<String> masterInventoryList = new ArrayList<String>();
 	private BigDecimal currentMoney = new BigDecimal(0.00);
 
 	public VendingMachine() {
-	
-		String path = "vendingmachine.csv";
-	private List<String> masterInventoryList = new ArrayList<String>();
-
-	public VendingMachine() {
 
 		String path = "vendingmachine.csv";
-		// File inventoryFile = new File(path);
 		File inventoryFile = new File(path);
 
 		if (!inventoryFile.exists()) { // Checks if the file is there
@@ -92,6 +87,8 @@ public class VendingMachine {
 	
 	public BigDecimal getCurrentMoney() {
 		return this.currentMoney;
+	}
+	
 	public List<Item> getInventoryList() {
 		return inventoryList;
 	}
