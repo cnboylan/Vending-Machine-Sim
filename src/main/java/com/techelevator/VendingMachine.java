@@ -14,8 +14,9 @@ import com.techelevator.item.Drink;
 public class VendingMachine {
 
 	private List<Item> inventoryList = new ArrayList<Item>();
-	private List<String> masterInventoryList = new ArrayList<String>();
+	private List<Item> masterInventoryList = new ArrayList<Item>();
 	private BigDecimal currentMoney = new BigDecimal(0.00);
+	private Scanner myScanner = new Scanner(System.in);
 
 	public VendingMachine() {
 
@@ -37,13 +38,15 @@ public class VendingMachine {
 				String line = fileScanner.nextLine();
 				String[] lineArray = line.split("\\|");
 
-				masterInventoryList.add(lineArray[1]);
-
 				if (lineArray[3].equals("Chip")) {
 
 					for (int i = 0; i < 5; i++) {
 						Item newChip = new Chip(lineArray[0], lineArray[1], new BigDecimal(lineArray[2]));
 						inventoryList.add(newChip);
+						
+						if (i == 0) {
+							masterInventoryList.add(newChip);
+						}
 					}
 				}
 
@@ -51,6 +54,10 @@ public class VendingMachine {
 					for (int i = 0; i < 5; i++) {
 						Item newCandy = new Candy(lineArray[0], lineArray[1], new BigDecimal(lineArray[2]));
 						inventoryList.add(newCandy);
+					
+						if (i == 0) {
+							masterInventoryList.add(newCandy);
+						}
 					}
 				}
 
@@ -58,6 +65,10 @@ public class VendingMachine {
 					for (int i = 0; i < 5; i++) {
 						Item newDrink = new Drink(lineArray[0], lineArray[1], new BigDecimal(lineArray[2]));
 						inventoryList.add(newDrink);
+						
+						if (i == 0) {
+							masterInventoryList.add(newDrink);
+						}
 					}
 				}
 
@@ -65,6 +76,10 @@ public class VendingMachine {
 					for (int i = 0; i < 5; i++) {
 						Item newGum = new Gum(lineArray[0], lineArray[1], new BigDecimal(lineArray[2]));
 						inventoryList.add(newGum);
+						
+						if (i == 0) {
+							masterInventoryList.add(newGum);
+						}
 					}
 				}
 			}
@@ -93,48 +108,59 @@ public class VendingMachine {
 		return inventoryList;
 	}
 
-	public List<String> getMasterInventoryList() {
+	public List<Item> getMasterInventoryList() {
 		return masterInventoryList;
 	}
 
 	public void displayInventory() {
 		
-		for (String name : getMasterInventoryList()) {
+		for (Item item : getMasterInventoryList()) {
 			int count = 0;
 			for (Item invName : getInventoryList()) {
 
-				if (name.equals(invName.getProductName())) {
+				if (item.getProductName().equals(invName.getProductName())) {
 					count++;
 				}
 			}
 			if (count == 0) {
-				System.out.println(name + " Sold Out");
+				System.out.println(item.getProductName() + " Sold Out");
 			} else
 
-				System.out.println(name + count);
+				System.out.println(item.getProductName() + " " + count);
 		}
 	}
 
 	public void feedMoney() {
 		
-		Scanner feedScanner = new Scanner(System.in);
 		System.out.println("Please insert money (e.g. 1, 2, 5, 10) ");
-		String dollarInput = feedScanner.nextLine();
+		String dollarInput = myScanner.nextLine();
 		
-		while (!dollarInput.equals("1") || !dollarInput.equals("2") || !dollarInput.equals("5")|| !dollarInput.equals("10")) {
+		if (!dollarInput.equals("1") && !dollarInput.equals("2") && !dollarInput.equals("5") && !dollarInput.equals("10")) {
 			System.out.println("Invalid dollar amount! Please try again.");
-			
-			dollarInput = feedScanner.nextLine();
+			feedMoney();
+		} else {
+			setCurrentMoney(currentMoney.add(new BigDecimal(dollarInput)));
 		}
-		
-		BigDecimal newMoney = new BigDecimal(dollarInput);
-		this.currentMoney.add(newMoney);
 	}
 
 
 	public void selectProduct() {
-
 		
+		for (Item item : getMasterInventoryList()) {
+			System.out.println(item.getSlotLocation() + " " + item.getProductName() + " " + item.getPrice());
+		}
+		
+		System.out.println("Enter the item code: ");
+		String itemCode = myScanner.nextLine();
+		
+		if() {
+			
+		}
+		
+		if() {
+			
+		}
+			
 	}
 
 	public void finishTransaction() {

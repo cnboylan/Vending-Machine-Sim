@@ -1,15 +1,12 @@
 package com.techelevator;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
+import java.text.DecimalFormat;
 import java.util.Scanner;
-
-import com.techelevator.item.Item;
 
 public class Menu {
 
 	private VendingMachine machine = new VendingMachine();
+	private DecimalFormat df = new DecimalFormat("#,##0.00");
 
 	public Menu(VendingMachine machine) {
 
@@ -55,7 +52,7 @@ public class Menu {
 			System.out.println("(1) Feed Money");
 			System.out.println("(2) Select Product");
 			System.out.println("(3) Finish Transaction");
-			System.out.println(">> Current Money Provided: " + machine.getCurrentMoney() + " <<");
+			System.out.println(">> Current Money Provided: $" + df.format(machine.getCurrentMoney()) + " <<");
 			
 			String userChoice = userInput.nextLine();
 
