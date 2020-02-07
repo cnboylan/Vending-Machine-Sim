@@ -7,6 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import com.techelevator.item.Chip;
+import com.techelevator.item.Drink;
+
 public class VendingMachine {
 	
 	private List<Item> inventoryList = new ArrayList<Item>();
