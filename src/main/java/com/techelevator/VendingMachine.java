@@ -12,21 +12,27 @@ import com.techelevator.item.Chip;
 import com.techelevator.item.Drink;
 
 public class VendingMachine {
-	
+
 	private List<Item> inventoryList = new ArrayList<Item>();
 	private BigDecimal currentMoney = new BigDecimal(0.00);
 
 	public VendingMachine() {
 	
 		String path = "vendingmachine.csv";
+	private List<String> masterInventoryList = new ArrayList<String>();
+
+	public VendingMachine() {
+
+		String path = "vendingmachine.csv";
+		// File inventoryFile = new File(path);
 		File inventoryFile = new File(path);
 
-		if( !inventoryFile.exists() ) { // Checks if the file is there
-			System.out.println(path+" doesn't exist");
+		if (!inventoryFile.exists()) { // Checks if the file is there
+			System.out.println(path + " doesn't exist");
 			System.exit(1); // Ends the program
-			
-		} else if (!inventoryFile.isFile() ) {
-			System.out.println(path+" isn't a file");
+
+		} else if (!inventoryFile.isFile()) {
+			System.out.println(path + " isn't a file");
 			System.exit(1); // Ends program if the file's not there
 		}
 			
@@ -36,7 +42,10 @@ public class VendingMachine {
 				String line = fileScanner.nextLine();
 				String[] lineArray = line.split("\\|");
 
+				masterInventoryList.add(lineArray[1]);
+
 				if (lineArray[3].equals("Chip")) {
+
 					for (int i = 0; i < 5; i++) {
 						Item newChip = new Chip(lineArray[0], lineArray[1], new BigDecimal(lineArray[2]));
 						inventoryList.add(newChip);
@@ -70,6 +79,7 @@ public class VendingMachine {
 		}
 
 	}
+
 // Prints out the inventory list from the vending machine	
 //	public void printOut() {
 //		for (Item item : inventoryList) {
@@ -82,10 +92,30 @@ public class VendingMachine {
 	
 	public BigDecimal getCurrentMoney() {
 		return this.currentMoney;
+	public List<Item> getInventoryList() {
+		return inventoryList;
+	}
+
+	public List<String> getMasterInventoryList() {
+		return masterInventoryList;
 	}
 
 	public void displayInventory() {
+		
+		for (String name : getMasterInventoryList()) {
+			int count = 0;
+			for (Item invName : getInventoryList()) {
 
+				if (name.equals(invName.getProductName())) {
+					count++;
+				}
+			}
+			if (count == 0) {
+				System.out.println(name + " Sold Out");
+			} else
+
+				System.out.println(name + count);
+		}
 	}
 
 	public void feedMoney() {
