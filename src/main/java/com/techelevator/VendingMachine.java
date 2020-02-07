@@ -5,7 +5,9 @@ import com.techelevator.item.*;
 import java.io.FileNotFoundException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 import com.techelevator.item.Chip;
@@ -17,9 +19,24 @@ public class VendingMachine {
 
 	public VendingMachine() {
 
+	
 		String path = "vendingmachine.csv";
+		//File inventoryFile = new File(path);
 		File inventoryFile = new File(path);
 
+		if( !inventoryFile.exists() ) { // Checks if the file is there
+			System.out.println(path+" doesn't exist");
+			System.exit(1); // Ends the program
+			
+		} else if (!inventoryFile.isFile() ) {
+			System.out.println(path+" isn't a file");
+			System.exit(1); // Ends program if the file's not there
+		}
+
+
+		//public Map<String, Item> getInventory(File inventoryFile) throws FileNotFoundException {
+			//Map<String, Item> inventoryMap = new LinkedHashMap<String, Item>();
+			
 		try (Scanner fileScanner = new Scanner(inventoryFile)) {
 
 			while (fileScanner.hasNextLine()) {
@@ -58,7 +75,7 @@ public class VendingMachine {
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
-
+//return inventoryMap;
 	}
 // Prints out the inventory list from the vending machine	
 //	public void printOut() {
