@@ -5,9 +5,7 @@ import com.techelevator.item.*;
 import java.io.FileNotFoundException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Scanner;
 
 import com.techelevator.item.Chip;
@@ -16,12 +14,11 @@ import com.techelevator.item.Drink;
 public class VendingMachine {
 	
 	private List<Item> inventoryList = new ArrayList<Item>();
+	private BigDecimal currentMoney = new BigDecimal(0.00);
 
 	public VendingMachine() {
-
 	
 		String path = "vendingmachine.csv";
-		//File inventoryFile = new File(path);
 		File inventoryFile = new File(path);
 
 		if( !inventoryFile.exists() ) { // Checks if the file is there
@@ -32,10 +29,6 @@ public class VendingMachine {
 			System.out.println(path+" isn't a file");
 			System.exit(1); // Ends program if the file's not there
 		}
-
-
-		//public Map<String, Item> getInventory(File inventoryFile) throws FileNotFoundException {
-			//Map<String, Item> inventoryMap = new LinkedHashMap<String, Item>();
 			
 		try (Scanner fileScanner = new Scanner(inventoryFile)) {
 
@@ -75,7 +68,7 @@ public class VendingMachine {
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
-//return inventoryMap;
+
 	}
 // Prints out the inventory list from the vending machine	
 //	public void printOut() {
@@ -83,30 +76,38 @@ public class VendingMachine {
 //			System.out.println(item.getSlotLocation() + " " + item.getProductName() + " " + item.getPrice() + " " + item.getType());
 //		}
 //	}
+	public void setCurrentMoney(BigDecimal currentMoney) {
+		this.currentMoney = currentMoney;
+	}
 	
+	public BigDecimal getCurrentMoney() {
+		return this.currentMoney;
+	}
 
 	public void displayInventory() {
 
 	}
 
-	public void feedMoney(String dollarInput) {
-		String dollarAmount = "";
-
-		while (dollarAmount.equals("")) {
-
-			if (dollarInput.equals("1") || dollarInput.equals("2") || dollarInput.equals("5")
-					|| dollarInput.equals("10")) {
-				dollarAmount = dollarInput;
-
-			}
+	public void feedMoney() {
+		
+		Scanner feedScanner = new Scanner(System.in);
+		System.out.println("Please insert money (e.g. 1, 2, 5, 10) ");
+		String dollarInput = feedScanner.nextLine();
+		
+		while (!dollarInput.equals("1") || !dollarInput.equals("2") || !dollarInput.equals("5")|| !dollarInput.equals("10")) {
+			System.out.println("Invalid dollar amount! Please try again.");
+			
+			dollarInput = feedScanner.nextLine();
 		}
-
-		purchaseMenu();
+		
+		BigDecimal newMoney = new BigDecimal(dollarInput);
+		this.currentMoney.add(newMoney);
 	}
+
 
 	public void selectProduct() {
 
-		purchaseMenu();
+		
 	}
 
 	public void finishTransaction() {

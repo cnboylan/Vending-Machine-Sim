@@ -5,8 +5,7 @@ import java.util.Scanner;
 
 public class Menu {
 
-	VendingMachine machine = new VendingMachine();
-	BigDecimal currentMoney = new BigDecimal(0.00);
+	private VendingMachine machine = new VendingMachine();
 
 	public Menu(VendingMachine machine) {
 
@@ -49,15 +48,14 @@ public class Menu {
 			System.out.println("(1) Feed Money");
 			System.out.println("(2) Select Product");
 			System.out.println("(3) Finish Transaction");
-			System.out.println(">> Current Money Provided: " + currentMoney + " <<");
+			System.out.println(">> Current Money Provided: " + machine.getCurrentMoney() + " <<");
 			
 			String userChoice = userInput.nextLine();
 
 			if (userChoice.equals("1")) {
-				System.out.println("Please enter your dollar amount (e.g. 1, 2, 5, 10) ");
-				String dollarInput = userInput.nextLine();
-
-				machine.feedMoney(dollarInput);
+				
+				machine.feedMoney();
+				purchaseMenu();
 			}
 
 			if (userChoice.equals("2")) {
