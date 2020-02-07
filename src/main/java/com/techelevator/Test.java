@@ -5,7 +5,8 @@ public class Test {
 	public static void main(String[] args) {
 		
 		VendingMachine test = new VendingMachine();
-		test.printOut();
+		MainMenu testMenu = new MainMenu(test);
+		//test.printOut();
 
 	}
 
