@@ -3,11 +3,15 @@ package com.techelevator;
 import java.io.File;
 import com.techelevator.item.*;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.time.format.DateTimeFormatter;  
+import java.time.LocalDateTime;
 
 import com.techelevator.item.Chip;
 import com.techelevator.item.Drink;
@@ -25,8 +29,12 @@ public class VendingMachine {
 	private int nickels = 0;
 	
 	private Scanner myScanner = new Scanner(System.in);
+	private File newFile;
+	private PrintWriter auditLog;
 	
 	private DecimalFormat df = new DecimalFormat("#,##0.00");
+	private DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm:ss");
+	private LocalDateTime now = LocalDateTime.now();
 	
 	private String[] foodSounds = {"Crunch", "Munch", "Glug", "Chew"};
 
@@ -115,6 +123,8 @@ public class VendingMachine {
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
+		
+		logTransactions();
 
 	}
 
@@ -256,6 +266,27 @@ public class VendingMachine {
 		
 		System.out.println(quarters + " quarters\n" + dimes + " dimes\n" + nickels + " nickels\n");
 
+	}
+	
+	public void logTransactions() {
+		newFile = new File("/Users/caitlynboylan/workspace/java-capstone-module-1-team-1", "Log.txt");
+		
+		try {
+			newFile.createNewFile();
+			
+		} catch (IOException e) {
+			System.out.println("Unable to create file!");
+			System.exit(0);
+		}
+		
+		try {
+			auditLog = new PrintWriter(newFile);
+			
+		} catch (IOException e) {
+			System.out.println("File not found!");
+			System.exit(0);
+		}
+		
 	}
 
 }
