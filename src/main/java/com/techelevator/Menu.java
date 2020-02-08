@@ -13,6 +13,8 @@ public class Menu {
 		this.machine = machine;
 	}
 
+//MAINMENU METHOD 
+	
 	public void mainMenu() {
 
 		Scanner userInput = new Scanner(System.in);
@@ -45,6 +47,8 @@ public class Menu {
 			mainMenu();
 	}
 
+//PURCHASEMENU METHOD
+	
 	public void purchaseMenu() {
 
 		Scanner userInput = new Scanner(System.in);
@@ -78,21 +82,3 @@ public class Menu {
 	}
 
 }
-
-/*
- * // Clock.java public class Clock { private int hour; private int minute;
- * private int second;
- * 
- * // Constructor has same name and spelling of class. // Notice there isn't a
- * return type with constructors. public Clock(int hour, int minute, int second)
- * { this.hour = hour; this.minute = minute; this.second = second;
- */
-
-//example of using a scanner to iterate through a file. 
-/*
- * int wordCount = 0; while(scan.hasNext()) { scan.next();
- * 
- * wordCount ++; }
- * 
- * System.out.println("Word Count: "+wordCount); scan.close();
- */
