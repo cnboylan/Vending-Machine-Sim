@@ -272,7 +272,7 @@ public class VendingMachine {
 	}
 	
 	public void logTransactions() {
-		newFile = new File("/Users/caitlynboylan/workspace/java-capstone-module-1-team-1", "Log.txt");
+		newFile = new File("/Users/adammyers/workspace/java-capstone-module-1-team-1", "Log.txt");
 		
 		try {
 			newFile.createNewFile();
