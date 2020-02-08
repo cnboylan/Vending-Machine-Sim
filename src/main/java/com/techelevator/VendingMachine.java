@@ -36,7 +36,7 @@ public class VendingMachine {
 	
 	private DecimalFormat df = new DecimalFormat("#,##0.00");
 	private DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm:ss");
-	private LocalDateTime now = LocalDateTime.now();
+	private LocalDateTime now;
 	
 	private String[] foodSounds = {"Crunch", "Munch", "Glug", "Chew"};
 
@@ -186,7 +186,7 @@ public class VendingMachine {
 			feedMoney();
 		} else {
 			setCurrentMoney(currentMoney.add(new BigDecimal(dollarInput)));
-			auditLog.println(dtf.format(now) + " FEED MONEY: $" + df.format(new BigDecimal(dollarInput)) + " $" + df.format(currentMoney) + " ");
+			auditLog.println(dtf.format(LocalDateTime.now()) + " FEED MONEY: $" + df.format(new BigDecimal(dollarInput)) + " $" + df.format(currentMoney) + " ");
 		}
 	}
 
@@ -213,8 +213,11 @@ public class VendingMachine {
 							String type = invItem.getType();
 							String productName = invItem.getProductName();
 							BigDecimal price = invItem.getPrice();
+							
 							inventoryList.remove(invItem);
+							BigDecimal auditAmount = currentMoney;
 							currentMoney = currentMoney.subtract(price);
+							
 							String sound = "";
 
 							if (type.equals("Chip")) {
@@ -229,6 +232,8 @@ public class VendingMachine {
 
 							System.out.println(productName + " $" + df.format(price) + " $"+ df.format(currentMoney));
 							System.out.println(sound + " " + sound + ", Yum!\n");
+							
+							auditLog.println(dtf.format(LocalDateTime.now()) + " " + productName + " " + invItem.getSlotLocation() + " $" + df.format(auditAmount) + " $" + df.format(currentMoney) + " ");
 
 							return;
 						}
@@ -251,28 +256,25 @@ public class VendingMachine {
 		
 		double change = currentMoney.doubleValue();
 		
-		remainingMoney = change % coins[0];
-		quarters = (int)((change - remainingMoney) / coins[0]);
+		quarters = (int)(change / coins[0]);
+		remainingMoney = change - (quarters * coins[0]);
+		
+		dimes = (int)(remainingMoney / coins[1]);
+		remainingMoney = remainingMoney - (dimes * coins[1]);
+		
+		nickels = (int)(remainingMoney / coins[2]);
+		remainingMoney = remainingMoney - (nickels * coins[2]);
+		
 		currentMoney = new BigDecimal(remainingMoney);
 		
-		if (remainingMoney > 0) {
-			remainingMoney = change % coins[1];
-			dimes = (int)((change - remainingMoney) / coins[1]);
-			currentMoney = new BigDecimal(remainingMoney);
-		}
-		
-		if (remainingMoney > 0) {
-			remainingMoney = change % coins[2];
-			nickels = (int)((change - remainingMoney) / coins[2]);
-			currentMoney = new BigDecimal(remainingMoney);
-		}
-		
 		System.out.println(quarters + " quarters\n" + dimes + " dimes\n" + nickels + " nickels\n");
+		
+		auditLog.println(dtf.format(LocalDateTime.now()) + " GIVE CHANGE: $" + df.format(change) + " $" + df.format(currentMoney) + " ");
 
 	}
 	
 	public void logTransactions() {
-		newFile = new File("/Users/caitlynboylan/workspace/java-capstone-module-1-team-1", "Log.txt");
+		newFile = new File("Log.txt");
 		
 		try {
 			newFile.createNewFile();
@@ -283,7 +285,7 @@ public class VendingMachine {
 		}
 		
 		try {
-			fileWriter = new FileWriter(newFile, true);
+			fileWriter = new FileWriter(newFile, false);
 			auditLog = new PrintWriter(fileWriter);
 			
 			
