@@ -16,9 +16,18 @@ public class VendingMachine {
 
 	private List<Item> inventoryList = new ArrayList<Item>();
 	private List<Item> masterInventoryList = new ArrayList<Item>();
+	
 	private BigDecimal currentMoney = new BigDecimal(0.00);
+	private double remainingMoney = 0;
+	private double[] coins = {.25, .10, .05};
+	private int quarters = 0;
+	private int dimes = 0;
+	private int nickels = 0;
+	
 	private Scanner myScanner = new Scanner(System.in);
+	
 	private DecimalFormat df = new DecimalFormat("#,##0.00");
+	
 	private String[] foodSounds = {"Crunch", "Munch", "Glug", "Chew"};
 
 	public VendingMachine() {
@@ -183,51 +192,69 @@ public class VendingMachine {
 			
 			if(itemCode.equals(item.getSlotLocation())) {
 				
-				for(Item invItem : getInventoryList()) {
-					
-					if(itemCode.equals(item.getSlotLocation())) {
-						String type = item.getType();
-						String productName = item.getProductName();
-						BigDecimal price = item.getPrice();
-						inventoryList.remove(invItem);
-						currentMoney = currentMoney.subtract(price);
-						String sound = "";
+				if (item.getPrice().compareTo(currentMoney) <= 0) {
+				
+					for(Item invItem : getInventoryList()) {
 						
-						if (type.equals("Chip")) {
-							sound = foodSounds[0];
-						} else if (type.equals("Candy")) {
-							sound = foodSounds[1];
-						} else if (type.equals("Drink")) {
-							sound = foodSounds[2];
-						} else if (type.equals("Gum")) {
-							sound = foodSounds[3];
+						if(itemCode.equals(invItem.getSlotLocation())) {
+							String type = invItem.getType();
+							String productName = invItem.getProductName();
+							BigDecimal price = invItem.getPrice();
+							inventoryList.remove(invItem);
+							currentMoney = currentMoney.subtract(price);
+							String sound = "";
+
+							if (type.equals("Chip")) {
+								sound = foodSounds[0];
+							} else if (type.equals("Candy")) {
+								sound = foodSounds[1];
+							} else if (type.equals("Drink")) {
+								sound = foodSounds[2];
+							} else if (type.equals("Gum")) {
+								sound = foodSounds[3];
+							}
+
+							System.out.println(productName + " $" + df.format(price) + " $"+ df.format(currentMoney));
+							System.out.println(sound + " " + sound + ", Yum!\n");
+
+							return;
 						}
-						
-						System.out.println(productName + " $" + df.format(price) + " $"+ df.format(currentMoney));
-						System.out.println(sound + " " + sound + ", Yum!\n");
-						
-						return;
 					}
+					
+					System.out.println("Item Sold Out. Select A Different Item.\n");
+					return;
 				}
-				System.out.println("Item Sold Out. Select A Different Item.\n");
+				
+				System.out.println("Not enough funds! Please enter more money.\n");
 				return;
 			}
 		}
-		System.out.println("Invalid Item Code. Try Again.\n");
+		System.out.println("Invalid Item Code. Try Again.\n");	
+			
 	}
-			
-		
-		
-		
-		
-		
-		
-		
-			
-	
 	
 	//FINISHTRANSACTION METHOD
 	public void finishTransaction() {
+		
+		double change = currentMoney.doubleValue();
+		
+		remainingMoney = change % coins[0];
+		quarters = (int)((change - remainingMoney) / coins[0]);
+		currentMoney = new BigDecimal(remainingMoney);
+		
+		if (remainingMoney > 0) {
+			remainingMoney = change % coins[1];
+			dimes = (int)((change - remainingMoney) / coins[1]);
+			currentMoney = new BigDecimal(remainingMoney);
+		}
+		
+		if (remainingMoney > 0) {
+			remainingMoney = change % coins[2];
+			nickels = (int)((change - remainingMoney) / coins[2]);
+			currentMoney = new BigDecimal(remainingMoney);
+		}
+		
+		System.out.println(quarters + " quarters\n" + dimes + " dimes\n" + nickels + " nickels\n");
 
 	}
 
