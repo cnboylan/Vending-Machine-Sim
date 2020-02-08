@@ -40,6 +40,7 @@ public class Menu {
 
 		if (userIn.equals("3")) {
 			// Exit Application
+			machine.close();
 			System.exit(0);
 		}
 		

@@ -3,6 +3,7 @@ package com.techelevator;
 import java.io.File;
 import com.techelevator.item.*;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.math.BigDecimal;
@@ -31,6 +32,7 @@ public class VendingMachine {
 	private Scanner myScanner = new Scanner(System.in);
 	private File newFile;
 	private PrintWriter auditLog;
+	FileWriter fileWriter;
 	
 	private DecimalFormat df = new DecimalFormat("#,##0.00");
 	private DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm:ss");
@@ -184,6 +186,7 @@ public class VendingMachine {
 			feedMoney();
 		} else {
 			setCurrentMoney(currentMoney.add(new BigDecimal(dollarInput)));
+			auditLog.println(dtf.format(now) + " FEED MONEY: $" + df.format(new BigDecimal(dollarInput)) + " $" + df.format(currentMoney) + " ");
 		}
 	}
 
@@ -280,13 +283,26 @@ public class VendingMachine {
 		}
 		
 		try {
-			auditLog = new PrintWriter(newFile);
+			fileWriter = new FileWriter(newFile, true);
+			auditLog = new PrintWriter(fileWriter);
+			
 			
 		} catch (IOException e) {
 			System.out.println("File not found!");
 			System.exit(0);
 		}
 		
+	}
+	
+	public void close() {
+		myScanner.close();
+		auditLog.close();
+		try {
+			fileWriter.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 }
