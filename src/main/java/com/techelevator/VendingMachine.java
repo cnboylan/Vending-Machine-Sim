@@ -9,9 +9,9 @@ import java.io.PrintWriter;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-//import java.util.LinkedHashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
-//import java.util.Map;
+import java.util.Map;
 import java.util.Scanner;
 import java.time.format.DateTimeFormatter;  
 import java.time.LocalDateTime;
@@ -22,11 +22,10 @@ import com.techelevator.item.Drink;
 public class VendingMachine {
 
 	private List<Item> inventoryList = new ArrayList<Item>();
-	private List<Item> masterInventoryList = new ArrayList<Item>();
-//	private Map<String, Item> masterInventory = new LinkedHashMap<String, Item>();
+	private Map<String, Item> masterInventory = new LinkedHashMap<String, Item>();
 	
 	private BigDecimal currentMoney = new BigDecimal(0.00);
-	private double remainingMoney = 0;
+	private int remainingMoney = 0;
 	private int[] coins = {25, 10, 5};
 	private int quarters = 0;
 	private int dimes = 0;
@@ -81,8 +80,7 @@ public class VendingMachine {
 						inventoryList.add(newChip);
 						
 						if (i == 0) {
-							masterInventoryList.add(newChip);
-//							masterInventory.put(newChip.getSlotLocation(), newChip);
+							masterInventory.put(newChip.getSlotLocation(), newChip);
 						}
 					}
 				}
@@ -96,8 +94,7 @@ public class VendingMachine {
 						inventoryList.add(newCandy);
 					
 						if (i == 0) {
-							masterInventoryList.add(newCandy);
-//							masterInventory.put(newCandy.getSlotLocation(), newCandy);
+							masterInventory.put(newCandy.getSlotLocation(), newCandy);
 						}
 					}
 				}
@@ -110,8 +107,7 @@ public class VendingMachine {
 						inventoryList.add(newDrink);
 						
 						if (i == 0) {
-							masterInventoryList.add(newDrink);
-//							masterInventory.put(newDrink.getSlotLocation(), newDrink);
+							masterInventory.put(newDrink.getSlotLocation(), newDrink);
 						}
 					}
 				}
@@ -123,8 +119,7 @@ public class VendingMachine {
 						inventoryList.add(newGum);
 						
 						if (i == 0) {
-							masterInventoryList.add(newGum);
-//							masterInventory.put(newGum.getSlotLocation(), newGum);
+							masterInventory.put(newGum.getSlotLocation(), newGum);
 						}
 					}
 				}
@@ -152,19 +147,15 @@ public class VendingMachine {
 	public List<Item> getInventoryList() {
 		return inventoryList;
 	}
-
-	public List<Item> getMasterInventoryList() {
-		return masterInventoryList;
-	}
 	
-//	public Map<String, Item> getMasterInventory() {
-//		return masterInventory;
-//	}
+	public Map<String, Item> getMasterInventory() {
+		return masterInventory;
+	}
 
 	//DISPLAY INVENTORY METHOD
 	public void displayInventory() {
 		
-		for (Item item : getMasterInventoryList()) {
+		for (Item item : getMasterInventory().values()) {
 			int count = 0;
 			for (Item invName : getInventoryList()) {
 
@@ -179,24 +170,6 @@ public class VendingMachine {
 				System.out.println(item.getProductName() + " " + count);
 		}
 	}
-	
-//	public void displayInventory() {
-//		
-//		for (Item item : getMasterInventory().values()) {
-//			int count = 0;
-//			for (Item invName : getInventoryList()) {
-//
-//				if (item.getProductName().equals(invName.getProductName())) {
-//					count++;
-//				}
-//			}
-//			if (count == 0) {
-//				System.out.println(item.getProductName() + " Sold Out");
-//			} else
-//
-//				System.out.println(item.getProductName() + " " + count);
-//		}
-//	}
 	
 	//FEEDMONEY METHOD
 	public void feedMoney() {
@@ -214,144 +187,88 @@ public class VendingMachine {
 	}
 
 	//SELECTPRODUCT METHOD
+
 	public void selectProduct() {
 		
-		for (Item item : getMasterInventoryList()) {
+		for (Item item : getMasterInventory().values()) {
 			System.out.println(item.getSlotLocation() + " " + item.getProductName() + " " + item.getPrice());
 		}
 		
 		System.out.println("_____________________\n");
 		System.out.println("Enter the item code: ");
 		String itemCode = myScanner.nextLine().toUpperCase();
-		
-		for (Item item : getMasterInventoryList()) {
-			
-			if(itemCode.equals(item.getSlotLocation())) {
-				
-				if (item.getPrice().compareTo(currentMoney) <= 0) {
-				
-					for(Item invItem : getInventoryList()) {
-						
-						if(itemCode.equals(invItem.getSlotLocation())) {
-							String type = invItem.getType();
-							String productName = invItem.getProductName();
-							BigDecimal price = invItem.getPrice();
-							
-							inventoryList.remove(invItem);
-							BigDecimal auditAmount = currentMoney;
-							currentMoney = currentMoney.subtract(price);
-							
-							String sound = "";
 
-							if (type.equals("Chip")) {
-								sound = foodSounds[0];
-							} else if (type.equals("Candy")) {
-								sound = foodSounds[1];
-							} else if (type.equals("Drink")) {
-								sound = foodSounds[2];
-							} else if (type.equals("Gum")) {
-								sound = foodSounds[3];
-							}
+		if(getMasterInventory().containsKey(itemCode)) {
 
-							System.out.println(productName + " $" + df.format(price) + " $"+ df.format(currentMoney));
-							System.out.println(sound + " " + sound + ", Yum!\n");
-							
-							auditLog.println(dtf.format(LocalDateTime.now()) + " " + productName + " " + invItem.getSlotLocation() + " $" + df.format(auditAmount) + " $" + df.format(currentMoney) + " ");
+			if (getMasterInventory().get(itemCode).getPrice().compareTo(currentMoney) <= 0) {
 
-							return;
+				for(Item item : getInventoryList()) {
+
+					if(itemCode.equals(item.getSlotLocation())) {
+						String type = item.getType();
+						String productName = item.getProductName();
+						BigDecimal price = item.getPrice();
+
+						inventoryList.remove(item);
+						BigDecimal auditAmount = currentMoney;
+						currentMoney = currentMoney.subtract(price);
+
+						String sound = "";
+
+						if (type.equals("Chip")) {
+							sound = foodSounds[0];
+						} else if (type.equals("Candy")) {
+							sound = foodSounds[1];
+						} else if (type.equals("Drink")) {
+							sound = foodSounds[2];
+						} else if (type.equals("Gum")) {
+							sound = foodSounds[3];
 						}
+
+						System.out.println(productName + " $" + df.format(price) + " $"+ df.format(currentMoney));
+						System.out.println(sound + " " + sound + ", Yum!\n");
+
+						auditLog.println(dtf.format(LocalDateTime.now()) + " " + productName + " " + item.getSlotLocation() + " $" + df.format(auditAmount) + " $" + df.format(currentMoney) + " ");
+
+						return;
 					}
-					
-					System.out.println("Item Sold Out. Select A Different Item.\n");
-					return;
 				}
-				
-				System.out.println("Not enough funds! Please enter more money.\n");
+
+				System.out.println("Item Sold Out. Select A Different Item.\n");
 				return;
 			}
+
+			System.out.println("Not enough funds! Please enter more money.\n");
+			return;
 		}
+
 		System.out.println("Invalid Item Code. Try Again.\n");	
 			
 	}
-	
-//	public void selectProduct() {
-//		
-//		for (Item item : getMasterInventory().values()) {
-//			System.out.println(item.getSlotLocation() + " " + item.getProductName() + " " + item.getPrice());
-//		}
-//		
-//		System.out.println("_____________________\n");
-//		System.out.println("Enter the item code: ");
-//		String itemCode = myScanner.nextLine().toUpperCase();
-//
-//		if(getMasterInventory().containsKey(itemCode)) {
-//
-//			if (getMasterInventory().get(itemCode).getPrice().compareTo(currentMoney) <= 0) {
-//
-//				for(Item item : getInventoryList()) {
-//
-//					if(itemCode.equals(item.getSlotLocation())) {
-//						String type = item.getType();
-//						String productName = item.getProductName();
-//						BigDecimal price = item.getPrice();
-//
-//						inventoryList.remove(item);
-//						BigDecimal auditAmount = currentMoney;
-//						currentMoney = currentMoney.subtract(price);
-//
-//						String sound = "";
-//
-//						if (type.equals("Chip")) {
-//							sound = foodSounds[0];
-//						} else if (type.equals("Candy")) {
-//							sound = foodSounds[1];
-//						} else if (type.equals("Drink")) {
-//							sound = foodSounds[2];
-//						} else if (type.equals("Gum")) {
-//							sound = foodSounds[3];
-//						}
-//
-//						System.out.println(productName + " $" + df.format(price) + " $"+ df.format(currentMoney));
-//						System.out.println(sound + " " + sound + ", Yum!\n");
-//
-//						auditLog.println(dtf.format(LocalDateTime.now()) + " " + productName + " " + item.getSlotLocation() + " $" + df.format(auditAmount) + " $" + df.format(currentMoney) + " ");
-//
-//						return;
-//					}
-//				}
-//
-//				System.out.println("Item Sold Out. Select A Different Item.\n");
-//				return;
-//			}
-//
-//			System.out.println("Not enough funds! Please enter more money.\n");
-//			return;
-//		}
-//
-//		System.out.println("Invalid Item Code. Try Again.\n");	
-//			
-//	}
 	
 	//FINISHTRANSACTION METHOD
 	public void finishTransaction() {
 		
 		int change = (int)(currentMoney.doubleValue() * 100);
+		
 		if(change > 24) {
-		quarters = (int)(change / coins[0]);
-		remainingMoney = change - (quarters * coins[0]);
+			quarters = (int)(change / coins[0]);
+			remainingMoney = change - (quarters * coins[0]);
 		}
+		
 		if(remainingMoney > 9) {
-		dimes = (int)(remainingMoney / coins[1]);
-		remainingMoney = remainingMoney - (dimes * coins[1]);
+			dimes = (int)(remainingMoney / coins[1]);
+			remainingMoney = remainingMoney - (dimes * coins[1]);
 		}
+		
 		nickels = (int)(remainingMoney / coins[2]);
 		remainingMoney = remainingMoney - (nickels * coins[2]);
 		
 		currentMoney = new BigDecimal(remainingMoney);
 		
-		System.out.println(quarters + " quarters\n" + dimes + " dimes\n" + nickels + " nickels\n");
+		System.out.println("Quarters: " + quarters + "\nDimes: " + dimes + "\nNickels: " + nickels + "\n");
 		
-		auditLog.println(dtf.format(LocalDateTime.now()) + " GIVE CHANGE: $" + df.format(change) + " $" + df.format(currentMoney) + " ");
+		auditLog.println(dtf.format(LocalDateTime.now()) + " GIVE CHANGE: $" + df.format(((double)change / 100)) + " $" + df.format(currentMoney) + " ");
 
 	}
 	
@@ -381,10 +298,10 @@ public class VendingMachine {
 	public void close() {
 		myScanner.close();
 		auditLog.close();
+		
 		try {
 			fileWriter.close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

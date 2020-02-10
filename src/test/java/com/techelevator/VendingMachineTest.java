@@ -25,7 +25,7 @@ public class VendingMachineTest {
 	
 	@Test
 	public void checking_length_of_master_inventory_list() {
-		Assert.assertEquals(16, testVM.getMasterInventoryList().size());
+		Assert.assertEquals(16, testVM.getMasterInventory().size());
 	}
 	
 	@Test
@@ -41,6 +41,13 @@ public class VendingMachineTest {
 		testVM.feedMoney();
 		
 		Assert.assertEquals(testVM.getCurrentMoney(), new BigDecimal(test));
+	}
+	
+	@Test
+	public void finish_transaction_updates_balance() {
+		testVM.feedMoney();
+		testVM.finishTransaction();
+		Assert.assertTrue(testVM.getCurrentMoney().compareTo(new BigDecimal(0)) == 0);
 	}
 	
 	@Test
