@@ -28,6 +28,7 @@ public class Menu {
 		if (userIn.equals("1")) {
 			// List All Items and their Quantities in Vending Machine
 			machine.displayInventory();
+			//machine.displayMapInventory();
 			mainMenu();
 					
 					

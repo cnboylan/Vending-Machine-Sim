@@ -15,6 +15,12 @@ public class VendingMachineTest {
 	Scanner testScanner = new Scanner(System.in);
 	
 	@Test
+	public void test_set_and_get_currentMoney() {
+		testVM.setCurrentMoney(new BigDecimal(5));
+		Assert.assertTrue(testVM.getCurrentMoney().compareTo(new BigDecimal(5)) == 0);
+	}
+	
+	@Test
 	public void checking_length_of_master_inventory_list() {
 		Assert.assertEquals(16, testVM.getMasterInventoryList().size());
 	}

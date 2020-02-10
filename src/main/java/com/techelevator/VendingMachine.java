@@ -9,7 +9,9 @@ import java.io.PrintWriter;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+//import java.util.LinkedHashMap;
 import java.util.List;
+//import java.util.Map;
 import java.util.Scanner;
 import java.time.format.DateTimeFormatter;  
 import java.time.LocalDateTime;
@@ -21,6 +23,7 @@ public class VendingMachine {
 
 	private List<Item> inventoryList = new ArrayList<Item>();
 	private List<Item> masterInventoryList = new ArrayList<Item>();
+//	private Map<String, Item> masterInventory = new LinkedHashMap<String, Item>();
 	
 	private BigDecimal currentMoney = new BigDecimal(0.00);
 	private double remainingMoney = 0;
@@ -36,10 +39,11 @@ public class VendingMachine {
 	
 	private DecimalFormat df = new DecimalFormat("#,##0.00");
 	private DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm:ss");
-	private LocalDateTime now;
 	
 	private String[] foodSounds = {"Crunch", "Munch", "Glug", "Chew"};
 
+	
+	
 	public VendingMachine() {
 		
 		//SETS VENDING MACHINE FILE TO "PATH" VARIABLE
@@ -78,6 +82,7 @@ public class VendingMachine {
 						
 						if (i == 0) {
 							masterInventoryList.add(newChip);
+//							masterInventory.put(newChip.getSlotLocation(), newChip);
 						}
 					}
 				}
@@ -92,6 +97,7 @@ public class VendingMachine {
 					
 						if (i == 0) {
 							masterInventoryList.add(newCandy);
+//							masterInventory.put(newCandy.getSlotLocation(), newCandy);
 						}
 					}
 				}
@@ -105,6 +111,7 @@ public class VendingMachine {
 						
 						if (i == 0) {
 							masterInventoryList.add(newDrink);
+//							masterInventory.put(newDrink.getSlotLocation(), newDrink);
 						}
 					}
 				}
@@ -117,6 +124,7 @@ public class VendingMachine {
 						
 						if (i == 0) {
 							masterInventoryList.add(newGum);
+//							masterInventory.put(newGum.getSlotLocation(), newGum);
 						}
 					}
 				}
@@ -129,13 +137,6 @@ public class VendingMachine {
 		logTransactions();
 
 	}
-
-// Prints out the inventory list from the vending machine	
-//	public void printOut() {
-//		for (Item item : inventoryList) {
-//			System.out.println(item.getSlotLocation() + " " + item.getProductName() + " " + item.getPrice() + " " + item.getType());
-//		}
-//	}
 	
 	
 	
@@ -155,6 +156,10 @@ public class VendingMachine {
 	public List<Item> getMasterInventoryList() {
 		return masterInventoryList;
 	}
+	
+//	public Map<String, Item> getMasterInventory() {
+//		return masterInventory;
+//	}
 
 	//DISPLAY INVENTORY METHOD
 	public void displayInventory() {
@@ -174,6 +179,24 @@ public class VendingMachine {
 				System.out.println(item.getProductName() + " " + count);
 		}
 	}
+	
+//	public void displayInventory() {
+//		
+//		for (Item item : getMasterInventory().values()) {
+//			int count = 0;
+//			for (Item invName : getInventoryList()) {
+//
+//				if (item.getProductName().equals(invName.getProductName())) {
+//					count++;
+//				}
+//			}
+//			if (count == 0) {
+//				System.out.println(item.getProductName() + " Sold Out");
+//			} else
+//
+//				System.out.println(item.getProductName() + " " + count);
+//		}
+//	}
 	
 	//FEEDMONEY METHOD
 	public void feedMoney() {
@@ -250,6 +273,64 @@ public class VendingMachine {
 		System.out.println("Invalid Item Code. Try Again.\n");	
 			
 	}
+	
+//	public void selectProduct() {
+//		
+//		for (Item item : getMasterInventory().values()) {
+//			System.out.println(item.getSlotLocation() + " " + item.getProductName() + " " + item.getPrice());
+//		}
+//		
+//		System.out.println("_____________________\n");
+//		System.out.println("Enter the item code: ");
+//		String itemCode = myScanner.nextLine().toUpperCase();
+//
+//		if(getMasterInventory().containsKey(itemCode)) {
+//
+//			if (getMasterInventory().get(itemCode).getPrice().compareTo(currentMoney) <= 0) {
+//
+//				for(Item item : getInventoryList()) {
+//
+//					if(itemCode.equals(item.getSlotLocation())) {
+//						String type = item.getType();
+//						String productName = item.getProductName();
+//						BigDecimal price = item.getPrice();
+//
+//						inventoryList.remove(item);
+//						BigDecimal auditAmount = currentMoney;
+//						currentMoney = currentMoney.subtract(price);
+//
+//						String sound = "";
+//
+//						if (type.equals("Chip")) {
+//							sound = foodSounds[0];
+//						} else if (type.equals("Candy")) {
+//							sound = foodSounds[1];
+//						} else if (type.equals("Drink")) {
+//							sound = foodSounds[2];
+//						} else if (type.equals("Gum")) {
+//							sound = foodSounds[3];
+//						}
+//
+//						System.out.println(productName + " $" + df.format(price) + " $"+ df.format(currentMoney));
+//						System.out.println(sound + " " + sound + ", Yum!\n");
+//
+//						auditLog.println(dtf.format(LocalDateTime.now()) + " " + productName + " " + item.getSlotLocation() + " $" + df.format(auditAmount) + " $" + df.format(currentMoney) + " ");
+//
+//						return;
+//					}
+//				}
+//
+//				System.out.println("Item Sold Out. Select A Different Item.\n");
+//				return;
+//			}
+//
+//			System.out.println("Not enough funds! Please enter more money.\n");
+//			return;
+//		}
+//
+//		System.out.println("Invalid Item Code. Try Again.\n");	
+//			
+//	}
 	
 	//FINISHTRANSACTION METHOD
 	public void finishTransaction() {

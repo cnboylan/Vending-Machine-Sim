@@ -36,6 +36,12 @@ public class ItemTest {
 		Assert.assertEquals(new BigDecimal(1), testGum.getPrice());
 	}
 	
-	
+	@Test
+	public void test_get_type() {
+		Assert.assertEquals("Candy", testCandy.getType());
+		Assert.assertEquals("Chip", testChip.getType());
+		Assert.assertEquals("Drink", testDrink.getType());
+		Assert.assertEquals("Gum", testGum.getType());
+	}
 
 }
