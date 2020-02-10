@@ -7,7 +7,5 @@ import org.junit.Assert;
 import com.techelevator.item.*;
 
 public class MenuTest {
-	
-
 
 }

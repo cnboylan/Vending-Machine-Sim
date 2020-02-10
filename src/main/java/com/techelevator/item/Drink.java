@@ -8,7 +8,7 @@ public class Drink extends Item {
 		slotLocation = location;
 		productName = name;
 		this.price = price;
-		type = "Drinks";
+		type = "Drink";
 	}
 
 }
