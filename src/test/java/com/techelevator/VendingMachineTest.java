@@ -1,4 +1,7 @@
 package com.techelevator;
+import org.junit.Assert;
+
+
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -30,6 +33,7 @@ public class VendingMachineTest {
 		Assert.assertEquals(80, testVM.getInventoryList().size());
 	}
 	
+
 	@Test
 	public void feed_money_updates_balance() {
 		System.out.println("Enter amount of money tested for: ");
@@ -51,5 +55,6 @@ public class VendingMachineTest {
 		Assert.assertEquals(testVM.getCurrentMoney(), new BigDecimal(test).subtract(new BigDecimal(1.50)));
 		Assert.assertEquals(79, testVM.getInventoryList().size());
 	}
+
 
 }
