@@ -27,7 +27,7 @@ public class VendingMachine {
 	
 	private BigDecimal currentMoney = new BigDecimal(0.00);
 	private double remainingMoney = 0;
-	private double[] coins = {.25, .10, .05};
+	private int[] coins = {25, 10, 5};
 	private int quarters = 0;
 	private int dimes = 0;
 	private int nickels = 0;
@@ -335,14 +335,15 @@ public class VendingMachine {
 	//FINISHTRANSACTION METHOD
 	public void finishTransaction() {
 		
-		double change = currentMoney.doubleValue();
-		
+		int change = (int)(currentMoney.doubleValue() * 100);
+		if(change > 24) {
 		quarters = (int)(change / coins[0]);
 		remainingMoney = change - (quarters * coins[0]);
-		
+		}
+		if(remainingMoney > 9) {
 		dimes = (int)(remainingMoney / coins[1]);
 		remainingMoney = remainingMoney - (dimes * coins[1]);
-		
+		}
 		nickels = (int)(remainingMoney / coins[2]);
 		remainingMoney = remainingMoney - (nickels * coins[2]);
 		
